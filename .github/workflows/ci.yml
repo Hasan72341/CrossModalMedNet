@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Validate package metadata
+        run: |
+          python - <<'PY'
+          import tomllib
+          with open("pyproject.toml", "rb") as f:
+              tomllib.load(f)
+          PY
+      - name: Compile portable scripts
+        run: |
+          python -m py_compile \
+            project-group-5/scripts/evaluate_all_models.py \
+            project-group-5/scripts/smoke_eval.py \
+            project-group-5/scripts/test_dataloaders.py \
+            project-group-5/scripts/verify_checkpoints.py \
+            project-group-5/scripts/generate_servers.py \
+            project-group-5/generate_specific_visuals.py \
+            project-group-5/test_dataset.py \
+            project-group-5/inspect_data.py \
+            project-group-5/start_all.py \
+            project-group-5/test_crash.py

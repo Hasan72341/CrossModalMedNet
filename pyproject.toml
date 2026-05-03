@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crossmodalmednet"
+version = "0.1.0"
+description = "Research code for cross-modal CT-to-MR medical image synthesis."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "CrossModalMedNet authors" }]
+keywords = ["medical-imaging", "image-synthesis", "pytorch", "diffusion", "gan"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+dependencies = [
+  "accelerate",
+  "diffusers",
+  "matplotlib",
+  "numpy<2.0.0",
+  "pandas",
+  "peft",
+  "pydantic",
+  "pydantic-settings",
+  "piq",
+  "scikit-image",
+  "seaborn",
+  "tensorboard",
+  "torch",
+  "torchaudio",
+  "torchvision",
+  "tqdm",
+  "transformers",
+  "wandb",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+metrics = ["lpips", "torchmetrics"]
+
+[tool.setuptools]
+package-dir = { "" = "project-group-5" }
+
+[tool.setuptools.packages.find]
+where = ["project-group-5"]
+include = ["data*", "evaluation*", "models*", "scripts*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.pytest.ini_options]
+testpaths = ["project-group-5"]
+python_files = ["test_*.py"]
