@@ -1,0 +1,8 @@
+Compiled cyclegan_brain
+Compiled cyclegan_pelvis
+Compiled pix2pix_brain
+Compiled pix2pix_pelvis
+Compiled paired_diffusion_brain
+Compiled paired_diffusion_pelvis
+Compiled unpaired_diffusion_brain
+Compiled unpaired_diffusion_pelvis

@@ -1,0 +1,18 @@
+Generated /usershome/cs671_user4/project-group-5/docs/cyclegan_brain/cyclegan_brain_report.tex.
+Successfully compiled /usershome/cs671_user4/project-group-5/docs/cyclegan_brain/cyclegan_brain_report.pdf
+Generated /usershome/cs671_user4/project-group-5/docs/cyclegan_pelvis/cyclegan_pelvis_report.tex.
+Successfully compiled /usershome/cs671_user4/project-group-5/docs/cyclegan_pelvis/cyclegan_pelvis_report.pdf
+Generated /usershome/cs671_user4/project-group-5/docs/paired_diffusion_brain/paired_diffusion_brain_report.tex.
+Successfully compiled /usershome/cs671_user4/project-group-5/docs/paired_diffusion_brain/paired_diffusion_brain_report.pdf
+Generated /usershome/cs671_user4/project-group-5/docs/paired_diffusion_pelvis/paired_diffusion_pelvis_report.tex.
+Successfully compiled /usershome/cs671_user4/project-group-5/docs/paired_diffusion_pelvis/paired_diffusion_pelvis_report.pdf
+Generated /usershome/cs671_user4/project-group-5/docs/pix2pix_brain/pix2pix_brain_report.tex.
+Successfully compiled /usershome/cs671_user4/project-group-5/docs/pix2pix_brain/pix2pix_brain_report.pdf
+Generated /usershome/cs671_user4/project-group-5/docs/pix2pix_pelvis/pix2pix_pelvis_report.tex.
+Successfully compiled /usershome/cs671_user4/project-group-5/docs/pix2pix_pelvis/pix2pix_pelvis_report.pdf
+Generated /usershome/cs671_user4/project-group-5/docs/unpaired_diffusion_brain/unpaired_diffusion_brain_report.tex.
+Successfully compiled /usershome/cs671_user4/project-group-5/docs/unpaired_diffusion_brain/unpaired_diffusion_brain_report.pdf
+Generated /usershome/cs671_user4/project-group-5/docs/unpaired_diffusion_pelvis/unpaired_diffusion_pelvis_report.tex.
+Successfully compiled /usershome/cs671_user4/project-group-5/docs/unpaired_diffusion_pelvis/unpaired_diffusion_pelvis_report.pdf
+Generated /usershome/cs671_user4/project-group-5/docs/all_models_comparison/all_models_comparison_report.tex.
+Successfully compiled /usershome/cs671_user4/project-group-5/docs/all_models_comparison/all_models_comparison_report.pdf
