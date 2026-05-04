@@ -20,16 +20,13 @@ jobs:
           with open("pyproject.toml", "rb") as f:
               tomllib.load(f)
           PY
-      - name: Compile portable scripts
+      - name: Compile core scripts
         run: |
           python -m py_compile \
-            project-group-5/scripts/evaluate_all_models.py \
-            project-group-5/scripts/smoke_eval.py \
-            project-group-5/scripts/test_dataloaders.py \
-            project-group-5/scripts/verify_checkpoints.py \
-            project-group-5/scripts/generate_servers.py \
-            project-group-5/generate_specific_visuals.py \
-            project-group-5/test_dataset.py \
-            project-group-5/inspect_data.py \
-            project-group-5/start_all.py \
-            project-group-5/test_crash.py
+            app.py \
+            models/cyclegan/train.py \
+            models/pix2pix/train.py \
+            models/diffusion/train.py \
+            scripts/inspect_data.py \
+            scripts/test_dataset.py \
+            scripts/verify_checkpoints.py

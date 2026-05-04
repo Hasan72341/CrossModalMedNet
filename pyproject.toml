@@ -47,16 +47,16 @@ dev = ["pytest", "ruff"]
 metrics = ["lpips", "torchmetrics"]
 
 [tool.setuptools]
-package-dir = { "" = "project-group-5" }
+package-dir = { "" = "." }
 
 [tool.setuptools.packages.find]
-where = ["project-group-5"]
-include = ["data*", "evaluation*", "models*", "scripts*"]
+where = ["."]
+include = ["models*", "src*"]
 
 [tool.ruff]
 line-length = 100
 target-version = "py310"
 
 [tool.pytest.ini_options]
-testpaths = ["project-group-5"]
+testpaths = ["tests"]
 python_files = ["test_*.py"]
