@@ -1,0 +1,18 @@
+# Pix2Pix Brain Configuration
+model:
+  architecture: "pix2pix"
+  region: "brain"
+  ngf: 64
+  ndf: 64
+  gan_mode: "lsgan"
+
+data:
+  image_size: 256
+  batch_size: 16
+  num_workers: 4
+  unpaired: false
+
+training:
+  epochs: 200
+  lr: 0.0002
+  lambda_l1: 100.0

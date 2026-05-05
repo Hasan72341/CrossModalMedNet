@@ -1,16 +1,15 @@
 cff-version: 1.2.0
-title: CrossModalMedNet
-message: "If you use this repository, please cite it using this metadata."
-type: software
+message: "If you use this software, please cite it as below."
 authors:
-  - name: CrossModalMedNet authors
-abstract: "Research code for CT-to-MR synthesis on SynthRAD 2023 using Pix2Pix, CycleGAN, paired diffusion, and unpaired diffusion models."
+  - family-names: "CrossModalMedNet Authors"
+title: "CrossModalMedNet: High-Fidelity Medical Image Translation"
+version: 0.1.0
+date-released: 2026-04-24
+url: "https://github.com/Hasan72341/CrossModalMedNet"
 keywords:
-  - medical image synthesis
-  - cross-modal translation
-  - SynthRAD
-  - diffusion models
-  - CycleGAN
-  - Pix2Pix
-license: MIT
-date-released: "2026-05-14"
+  - medical-imaging
+  - image-synthesis
+  - pytorch
+  - diffusion
+  - gan
+  - synthrad

@@ -1,0 +1,21 @@
+# CycleGAN Brain Configuration
+model:
+  architecture: "cyclegan"
+  region: "brain"
+  ngf: 64
+  ndf: 64
+  num_res_blocks: 6
+  use_multiscale: true
+
+data:
+  image_size: 256
+  batch_size: 4
+  num_workers: 4
+  unpaired: true
+
+training:
+  epochs: 200
+  lr: 0.0002
+  lambda_cycle: 10.0
+  lambda_identity: 0.5
+  adv_mode: "lsgan"
