@@ -5,10 +5,11 @@ import torch
 import torch.nn.functional as F
 import numpy as np
 import matplotlib.pyplot as plt
-from PIL import Image
-import copy
+from src.utils.visualize import plot_translation_results
+from src.utils.metrics import MetricsCalculator
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+metric_calc = MetricsCalculator(device=device)
 
 st.set_page_config(page_title="CrossModalMedNet - SynthRAD 2023", layout="wide")
 st.title("CrossModalMedNet: Medical Image Translation (CT to MRI)")
@@ -195,6 +196,12 @@ if uploaded_file and model_info:
                 timesteps = torch.tensor([1], dtype=torch.long, device=device)
                 # Unpaired forward needs direction
                 output = diff["forward_with_networks"](img_input.repeat(1,3,1,1), diff["vae_enc"], diff["unet"], diff["vae_dec"], diff["scheduler"], timesteps, emb, direction="a2b")[:, 0:1]
+
+        # Calculate metrics if target image is available
+        # (For now, we just show them if input was .pt/.npy and we assume it's paired for simplicity)
+        if ext in ["pt", "npy"]:
+             # Placeholder for target loading if we had it, but for demo we just show prediction
+             pass
 
         col1, col2 = st.columns(2)
         with col1:
