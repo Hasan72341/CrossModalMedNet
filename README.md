@@ -4,11 +4,11 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 
-CrossModalMedNet is a comprehensive research-grade repository for high-fidelity medical image translation, specifically targeting CT-to-MRI synthesis using the [SynthRAD 2023](https://synthrad2023.grand-challenge.org/) dataset. This repository implements 8 models across 4 state-of-the-art architectures, optimized for multi-regional medical imaging.
+CrossModalMedNet is a comprehensive research-grade repository for high-fidelity CT-to-MRI medical image translation, specifically targeting the [SynthRAD 2023](https://synthrad2023.grand-challenge.org/) dataset. This repository implements 8 specialized models across 4 state-of-the-art architectures, optimized for CT-to-MRI synthesis in both Brain and Pelvis regions.
 
 ## 🔬 Overview
 
-Synthetic MRI generation from CT scans is a critical task in radiotherapy planning and diagnostic workflows, reducing patient exposure to ionizing radiation and lowering costs. CrossModalMedNet provides a standardized framework to benchmark GAN and Diffusion-based methods on this challenging cross-modal translation task.
+Synthetic MRI generation from CT scans is a critical task in radiotherapy planning, providing essential soft-tissue contrast without additional ionizing radiation. CrossModalMedNet provides a standardized framework to benchmark GAN and Diffusion-based methods for CT-to-MRI translation.
 
 ### Key Features
 - **Multi-Architecture Support**: CycleGAN, Pix2Pix, Paired LDM, and Unpaired Cycle-Diffusion.

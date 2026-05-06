@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "crossmodalmednet"
 version = "0.1.0"
-description = "Research code for cross-modal CT-to-MR medical image synthesis."
+description = "Research code for high-fidelity CT-to-MRI medical image synthesis."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
