@@ -1,0 +1,24 @@
+# Preprocessing Configuration for SynthRAD 2023
+data:
+  raw_dir: "/usershome/cs671_user4/SynthRAD2023_Dataset_Raw"
+  output_dir: "/usershome/cs671_user4/SynthRAD2023_Dataset"
+  regions: ["brain", "pelvis"]
+  seed: 42
+  train_ratio: 0.8
+
+resolution:
+  brain: [1.0, 1.0, 1.0] # mm
+  pelvis: [1.0, 1.0, 2.5] # mm
+
+normalization:
+  ct:
+    clip: [-1000.0, 1000.0]
+    range: [-1.0, 1.0]
+  mri:
+    percentile_clip: [1.0, 99.0]
+    method: "z-score"
+
+process:
+  workers: 8
+  crop_margin: 5
+  min_voxel_count: 1000

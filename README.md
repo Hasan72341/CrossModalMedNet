@@ -75,6 +75,11 @@ CrossModalMedNet/
 │   └── utils/          # Masked Metrics (MAE, SSIM, PSNR, LPIPS), Visualization
 ├── checkpoints/        # Pre-trained SOTA weights (Git LFS)
 ├── configs/            # Experiment YAML configurations
+│   ├── preprocess.yaml # Global preprocessing settings
+│   ├── dataset.yaml    # Shared dataset parameters
+│   ├── cyclegan_*.yaml # Model-specific configs (Brain/Pelvis)
+│   ├── pix2pix_*.yaml
+│   └── diffusion_*.yaml
 ├── scripts/            # Data inspection and validation tools
 ├── docs/               # Detailed research reports and documentation
 ├── app.py              # Streamlit dashboard
@@ -85,9 +90,9 @@ CrossModalMedNet/
 
 The repository provides a high-fidelity preprocessing pipeline using **SimpleITK** for rigorous medical image handling.
 
-1.  **Preprocessing**: Resample volumes to isotropic spacing (Brain: 1mm, Pelvis: 1.0x1.0x2.5mm), reorient to RAS, and crop to mask bounding boxes:
+1.  **Preprocessing**: Resample volumes to isotropic spacing, reorient to RAS, and crop to mask bounding boxes. Configuration is managed via `configs/preprocess.yaml`:
     ```bash
-    python src/data/preprocess.py --data2023 /path/to/raw/data --output /path/to/processed/dataset
+    python src/data/preprocess.py --config configs/preprocess.yaml
     ```
 2.  **Dataset**: Our `SynthRADDataset` (in `src/data/dataset.py`) is portable and supports:
     -   **3D Mode**: Returns full volumetric patches.

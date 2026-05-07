@@ -1,0 +1,21 @@
+# Dataset Configuration for SynthRAD 2023
+manifest_path: "/usershome/cs671_user4/SynthRAD2023_Dataset/manifest.csv"
+
+default_params:
+  image_size: 256
+  mode: "2d" # choices: ["2d", "2.5d", "3d"]
+  unpaired: false
+  batch_size: 4
+  num_workers: 4
+
+regions:
+  brain:
+    ct_suffix: "_ct"
+    mri_suffix: "_mr"
+  pelvis:
+    ct_suffix: "_ct"
+    mri_suffix: "_mr"
+
+augmentation:
+  random_flip: true
+  random_affine: false

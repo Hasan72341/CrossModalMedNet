@@ -33,6 +33,8 @@ dependencies = [
   "piq",
   "scikit-image",
   "seaborn",
+  "SimpleITK",
+  "nibabel",
   "tensorboard",
   "torch",
   "torchaudio",

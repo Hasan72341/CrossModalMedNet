@@ -1,7 +1,7 @@
-# Pix2Pix Brain (Paired CT -> MRI)
+# Pix2Pix Pelvis (Paired CT -> MRI)
 model:
   architecture: "pix2pix"
-  region: "brain"
+  region: "pelvis"
   ngf: 64
   ndf: 64
   gan_mode: "lsgan"

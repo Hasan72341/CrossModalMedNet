@@ -1,0 +1,21 @@
+# Diffusion Paired Pelvis (LDM CT -> MRI)
+model:
+  architecture: "diffusion_paired"
+  region: "pelvis"
+  base_model: "stabilityai/stable-diffusion-2-1-base"
+  lora_rank_unet: 8
+  lora_rank_vae: 4
+  input_nc: 3
+  output_nc: 3
+
+training:
+  epochs: 100
+  batch_size: 1
+  lr: 0.0001
+  mixed_precision: "fp16"
+  gradient_accumulation_steps: 4
+
+data:
+  image_size: 512
+  unpaired: false
+  prompt_target: "MRI scan"

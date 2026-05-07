@@ -1,7 +1,7 @@
-# CycleGAN Brain (Unpaired CT -> MRI)
+# CycleGAN Pelvis (Unpaired CT -> MRI)
 model:
   architecture: "cyclegan"
-  region: "brain"
+  region: "pelvis"
   ngf: 64
   ndf: 64
   num_res_blocks: 6

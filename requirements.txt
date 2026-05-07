@@ -16,3 +16,5 @@ tabulate
 pandas
 accelerate
 peft
+SimpleITK
+nibabel
