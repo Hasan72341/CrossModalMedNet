@@ -65,18 +65,41 @@ Metrics are computed using the `src.utils.metrics` module, ensuring consistent b
 ## 📂 Project Structure
 ```text
 CrossModalMedNet/
-├── models/             # Architecture-specific implementations
+├── models/             # Architecture-specific implementations (2D & 3D)
+│   ├── cyclegan/       # 2D CycleGAN
+│   ├── cyclegan_3d/    # 3D CycleGAN (Research grade)
+│   ├── pix2pix/        # 2D Pix2Pix
+│   └── diffusion/      # LDM-based models
 ├── src/                # Shared research logic
-│   ├── data/           # Unified SynthRAD dataset pipeline
-│   └── utils/          # Metrics (SSIM, PSNR, LPIPS), Visualization
+│   ├── data/           # Advanced SimpleITK-based preprocessing & Dataset
+│   └── utils/          # Masked Metrics (MAE, SSIM, PSNR, LPIPS), Visualization
 ├── checkpoints/        # Pre-trained SOTA weights (Git LFS)
-├── scripts/            # Data inspection and verification
+├── configs/            # Experiment YAML configurations
+├── scripts/            # Data inspection and validation tools
 ├── docs/               # Detailed research reports and documentation
 ├── app.py              # Streamlit dashboard
 └── inference.py        # CLI inference tool
 ```
 
-## 📜 Citation
+## 📊 Data Preparation (Research Grade)
+
+The repository provides a high-fidelity preprocessing pipeline using **SimpleITK** for rigorous medical image handling.
+
+1.  **Preprocessing**: Resample volumes to isotropic spacing (Brain: 1mm, Pelvis: 1.0x1.0x2.5mm), reorient to RAS, and crop to mask bounding boxes:
+    ```bash
+    python src/data/preprocess.py --data2023 /path/to/raw/data --output /path/to/processed/dataset
+    ```
+2.  **Dataset**: Our `SynthRADDataset` (in `src/data/dataset.py`) is portable and supports:
+    -   **3D Mode**: Returns full volumetric patches.
+    -   **2.5D Mode**: Returns multi-slice stacks (e.g., 3-slice) for context-aware 2D training.
+    -   **2D Mode**: Standard single-slice translation.
+
+## 🔬 Evaluation Metrics
+
+We implement **Masked Metrics** (MAE, MSE, SSIM, PSNR) as the primary benchmark. By focusing only on the anatomical foreground, we ensure that evaluation is not biased by background zero-padding, providing a true measure of clinical utility.
+
+## 🚀 Getting Started
+
 If you use this code in your research, please cite:
 ```bibtex
 @software{CrossModalMedNet2026,
