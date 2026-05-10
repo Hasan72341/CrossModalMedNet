@@ -1,22 +1,20 @@
-# CycleGAN Pelvis (Unpaired CT -> MRI)
+# CycleGAN 2D Brain (Unpaired CT -> MRI)
 model:
-  architecture: "cyclegan"
-  region: "pelvis"
+  architecture: "cyclegan2d"
+  region: "brain"
   ngf: 64
   ndf: 64
   num_res_blocks: 6
   use_multiscale: true
-  dropout: 0.0
 
 training:
   epochs: 200
   batch_size: 4
   lr: 0.0002
-  betas: [0.5, 0.999]
   lambda_cycle: 10.0
   lambda_identity: 0.5
-  adv_mode: "lsgan"
 
 data:
   image_size: 256
+  mode: "2d"
   unpaired: true

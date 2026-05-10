@@ -1,21 +1,17 @@
-# Pix2Pix Brain (Paired CT -> MRI)
+# Pix2Pix 2D Brain (Paired CT -> MRI)
 model:
-  architecture: "pix2pix"
+  architecture: "pix2pix2d"
   region: "brain"
   ngf: 64
   ndf: 64
-  gan_mode: "lsgan"
-  input_nc: 1
-  output_nc: 1
 
 training:
   epochs: 200
   batch_size: 16
   lr: 0.0002
-  betas: [0.5, 0.999]
   lambda_l1: 100.0
-  lambda_identity: 0.0
 
 data:
   image_size: 256
+  mode: "2d"
   unpaired: false

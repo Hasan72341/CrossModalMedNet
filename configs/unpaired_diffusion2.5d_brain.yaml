@@ -1,0 +1,17 @@
+# Unpaired Diffusion 2.5D Brain (LDM CT -> MRI)
+model:
+  architecture: "unpaired_diffusion2.5d"
+  region: "brain"
+  base_model: "stabilityai/stable-diffusion-2-1-base"
+  num_slices: 3
+
+training:
+  epochs: 100
+  batch_size: 1
+  lr: 0.00005
+
+data:
+  image_size: 512
+  mode: "2.5d"
+  unpaired: true
+  num_slices: 3

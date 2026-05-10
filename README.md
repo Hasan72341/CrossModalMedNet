@@ -3,109 +3,141 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
+[![Git LFS](https://img.shields.io/badge/Git-LFS-orange.svg)](https://git-lfs.github.com/)
 
-CrossModalMedNet is a comprehensive research-grade repository for high-fidelity CT-to-MRI medical image translation, specifically targeting the [SynthRAD 2023](https://synthrad2023.grand-challenge.org/) dataset. This repository implements 8 specialized models across 4 state-of-the-art architectures, optimized for CT-to-MRI synthesis in both Brain and Pelvis regions.
+CrossModalMedNet is a comprehensive, research-grade framework for high-fidelity **CT-to-MRI medical image translation**. Optimized for the [SynthRAD 2023](https://synthrad2023.grand-challenge.org/) dataset, it provides modular implementations of 8 specialized models across 4 state-of-the-art architectures (GANs and Diffusion) for both **Brain** and **Pelvis** anatomy.
 
-## 🔬 Overview
+## 🔬 Project Overview
 
-Synthetic MRI generation from CT scans is a critical task in radiotherapy planning, providing essential soft-tissue contrast without additional ionizing radiation. CrossModalMedNet provides a standardized framework to benchmark GAN and Diffusion-based methods for CT-to-MRI translation.
+Synthetic MRI generation from CT scans is critical for MRI-only radiotherapy planning, providing superior soft-tissue contrast without the ionizing radiation or cost of additional MRI scans. This repository standardizes the entire research lifecycle: from rigorous SimpleITK-based preprocessing to masked evaluation metrics.
 
-### Key Features
-- **Multi-Architecture Support**: CycleGAN, Pix2Pix, Paired LDM, and Unpaired Cycle-Diffusion.
-- **Region Optimization**: Specialized models for both **Brain** and **Pelvis** anatomy.
-- **Research Utility**: Unified data pipeline, standard evaluation metrics (SSIM, PSNR, LPIPS), and HU-aware normalization.
-- **Interactive Interface**: Streamlit-based web dashboard for real-time inference and visualization.
+### 🌟 Key Features
+-   **8 Specialized Models**: Architecture-region specific models (CycleGAN, Pix2Pix, Paired LDM, Unpaired Cycle-Diffusion).
+-   **Research-Grade Preprocessing**: Multi-threaded SimpleITK pipeline for resampling, RAS reorientation, and mask-aware cropping.
+-   **Masked Evaluation**: SSIM, PSNR, LPIPS, and MAE computed exclusively on anatomical foregrounds to ensure clinical relevance.
+-   **Portable Design**: Unified configuration system (YAML) and portable dataset loaders (manifest-based).
+-   **Interactive Ecosystem**: Integrated Streamlit dashboard and CLI tools for real-time inference and benchmarking.
 
-## 🏗️ Architecture details
+---
 
-| Architecture | Paradigm | Loss Functions | Best For |
-| :--- | :--- | :--- | :--- |
-| **CycleGAN** | Unpaired GAN | Cycle-Consistency, Identity, WGAN-GP | Unlabeled data scenarios |
-| **Pix2Pix** | Paired GAN | Conditional Adversarial + L1 Reconstruction | Structural precision |
-| **Diffusion (Paired)** | Latent Diffusion | Noise Prediction MSE + LDM | High perceptual quality |
-| **Diffusion (Unpaired)** | Cycle-Diffusion | Variational Inference + Structural Bottleneck | High-fidelity unpaired |
+## 🏗️ Architecture Suite (8 Models)
 
-## 🚀 Getting Started
+| Architecture | Paradigm | Region | Training Mode | Configuration File |
+| :--- | :--- | :--- | :--- | :--- |
+| **CycleGAN** | Unpaired GAN | Brain | Unpaired | `configs/cyclegan_brain.yaml` |
+| **CycleGAN** | Unpaired GAN | Pelvis | Unpaired | `configs/cyclegan_pelvis.yaml` |
+| **Pix2Pix** | Paired GAN | Brain | Paired | `configs/pix2pix_brain.yaml` |
+| **Pix2Pix** | Paired GAN | Pelvis | Paired | `configs/pix2pix_pelvis.yaml` |
+| **Diffusion** | Paired LDM | Brain | Paired | `configs/diffusion_paired_brain.yaml` |
+| **Diffusion** | Paired LDM | Pelvis | Paired | `configs/diffusion_paired_pelvis.yaml` |
+| **Diffusion** | Cycle-Diffusion | Brain | Unpaired | `configs/diffusion_unpaired_brain.yaml` |
+| **Diffusion** | Cycle-Diffusion | Pelvis | Unpaired | `configs/diffusion_unpaired_pelvis.yaml` |
 
-### Installation
+---
 
-1. Clone the repository:
+## 🚀 Installation
+
+### Prerequisites
+- **Git LFS**: Required to download pre-trained model checkpoints.
+  ```bash
+  git lfs install
+  ```
+
+### Environment Setup
 ```bash
 git clone https://github.com/Hasan72341/CrossModalMedNet.git
 cd CrossModalMedNet
-```
-
-2. Set up the environment:
-```bash
 pip install -r requirements.txt
 pip install -e .
 ```
 
-### Quick Start: Web Interface
-Launch the interactive demo to visualize results:
+---
+
+## 📊 Data Lifecycle
+
+### 1. Raw Data Structure
+Download the [SynthRAD 2023](https://synthrad2023.grand-challenge.org/) Task 1 data and organize it as follows:
+```text
+data/raw/
+├── brain/
+│   ├── 1BA001/ {ct.nii.gz, mr.nii.gz, mask.nii.gz}
+│   └── ...
+└── pelvis/
+    ├── 1PA001/ {ct.nii.gz, mr.nii.gz, mask.nii.gz}
+    └── ...
+```
+
+### 2. Standardized Preprocessing
+Our pipeline ensures all research data is clinically comparable:
+1.  **Resampling**: To isotropic spacing (Brain: 1mm, Pelvis: 1.0x1.0x2.5mm).
+2.  **Reorientation**: Fixed to RAS (Right-Anterior-Superior).
+3.  **Cropping**: Automated mask bounding-box cropping with 5-voxel margins.
+4.  **Normalization**: HU-aware scaling (CT: [-1000, 1000] $\rightarrow$ [-1, 1]).
+
+Run the pipeline:
+```bash
+python src/data/preprocess.py --config configs/preprocess.yaml
+```
+
+---
+
+## 🏋️ Training & Inference
+
+### Model Training
+Reference any of the 8 model configs to start training:
+```bash
+# Example: Train Pix2Pix for Pelvis
+python models/pix2pix/train.py --config configs/pix2pix_pelvis.yaml
+```
+
+### Dashboard Inference
+Launch the interactive Streamlit interface to run cross-model comparisons:
 ```bash
 streamlit run app.py
 ```
 
-### CLI Inference
-Run translation on a specific image via command line:
+### CLI Benchmarking
+Run inference and generate research metrics (SSIM/PSNR) for specific slices:
 ```bash
-python inference.py --architecture cyclegan --region brain --input path/to/ct_slice.pt --output result.png
+python inference.py --architecture cyclegan --region brain --input input.pt --target target.pt --output result.png
 ```
 
-## 📊 Evaluation & Reproducibility
-
-Detailed evaluation reports for each architecture are available in the `docs/` directory:
-- [CycleGAN Report](docs/cyclegan_brain/cyclegan_brain_report.pdf)
-- [Pix2Pix Report](docs/pix2pix_brain/pix2pix_brain_report.pdf)
-- [Diffusion Report](docs/paired_diffusion_brain/paired_diffusion_brain_report.pdf)
-
-Metrics are computed using the `src.utils.metrics` module, ensuring consistent benchmarking.
+---
 
 ## 📂 Project Structure
+
 ```text
 CrossModalMedNet/
-├── models/             # Architecture-specific implementations (2D & 3D)
-│   ├── cyclegan/       # 2D CycleGAN
-│   ├── cyclegan_3d/    # 3D CycleGAN (Research grade)
-│   ├── pix2pix/        # 2D Pix2Pix
-│   └── diffusion/      # LDM-based models
-├── src/                # Shared research logic
-│   ├── data/           # Advanced SimpleITK-based preprocessing & Dataset
-│   └── utils/          # Masked Metrics (MAE, SSIM, PSNR, LPIPS), Visualization
-├── checkpoints/        # Pre-trained SOTA weights (Git LFS)
-├── configs/            # Experiment YAML configurations
-│   ├── preprocess.yaml # Global preprocessing settings
-│   ├── dataset.yaml    # Shared dataset parameters
-│   ├── cyclegan_*.yaml # Model-specific configs (Brain/Pelvis)
-│   ├── pix2pix_*.yaml
-│   └── diffusion_*.yaml
-├── scripts/            # Data inspection and validation tools
-├── docs/               # Detailed research reports and documentation
-├── app.py              # Streamlit dashboard
-└── inference.py        # CLI inference tool
+├── models/             # Specialized DL Architectures
+│   ├── cyclegan/       # 2D Unpaired GANs
+│   ├── cyclegan_3d/    # Volumetric 3D CycleGAN
+│   ├── pix2pix/        # 2D Paired GANs
+│   └── diffusion/      # LDM-based Paired/Unpaired Translation
+├── src/                # Core Research Engine
+│   ├── data/           # Preprocessing (SimpleITK) & Portable Datasets
+│   └── utils/          # Masked Metrics & High-res Visualization
+├── configs/            # Modular Experiment Configuration (10 YAMLs)
+├── checkpoints/        # Pre-trained SOTA Weights (Git LFS)
+├── scripts/            # Dataset Validation & Distribution Checkers
+├── docs/               # Technical Reports & Comparative Studies
+├── app.py              # Unified Research Dashboard
+└── inference.py        # CLI Inference & Metrics Engine
 ```
 
-## 📊 Data Preparation (Research Grade)
+---
 
-The repository provides a high-fidelity preprocessing pipeline using **SimpleITK** for rigorous medical image handling.
+## 🔬 Evaluation & Reproducibility
 
-1.  **Preprocessing**: Resample volumes to isotropic spacing, reorient to RAS, and crop to mask bounding boxes. Configuration is managed via `configs/preprocess.yaml`:
-    ```bash
-    python src/data/preprocess.py --config configs/preprocess.yaml
-    ```
-2.  **Dataset**: Our `SynthRADDataset` (in `src/data/dataset.py`) is portable and supports:
-    -   **3D Mode**: Returns full volumetric patches.
-    -   **2.5D Mode**: Returns multi-slice stacks (e.g., 3-slice) for context-aware 2D training.
-    -   **2D Mode**: Standard single-slice translation.
+Metrics are calculated using the `src.utils.metrics` module. We report **Masked Metrics** (MAE, MSE, SSIM, PSNR, LPIPS) to prevent background padding from inflating performance scores, focusing purely on anatomical translation fidelity.
 
-## 🔬 Evaluation Metrics
+Detailed comparative analysis reports are available in `docs/`:
+- [CycleGAN vs Diffusion Analysis](docs/all_models_comparison/all_models_comparison.md)
+- [Brain Optimization Study](docs/cyclegan_brain/cyclegan_brain_documentation.md)
 
-We implement **Masked Metrics** (MAE, MSE, SSIM, PSNR) as the primary benchmark. By focusing only on the anatomical foreground, we ensure that evaluation is not biased by background zero-padding, providing a true measure of clinical utility.
+---
 
-## 🚀 Getting Started
-
-If you use this code in your research, please cite:
+## 📜 Citation
+If you use this framework in your research, please cite:
 ```bibtex
 @software{CrossModalMedNet2026,
   author = {CrossModalMedNet Authors},
@@ -116,4 +148,4 @@ If you use this code in your research, please cite:
 ```
 
 ## ⚖️ License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Licensed under the [MIT License](LICENSE).
