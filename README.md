@@ -24,14 +24,14 @@ Synthetic MRI generation from CT scans is critical for MRI-only radiotherapy pla
 
 | Architecture | Paradigm | Region | Training Mode | Configuration File |
 | :--- | :--- | :--- | :--- | :--- |
-| **CycleGAN** | Unpaired GAN | Brain | Unpaired | `configs/cyclegan_brain.yaml` |
-| **CycleGAN** | Unpaired GAN | Pelvis | Unpaired | `configs/cyclegan_pelvis.yaml` |
-| **Pix2Pix** | Paired GAN | Brain | Paired | `configs/pix2pix_brain.yaml` |
-| **Pix2Pix** | Paired GAN | Pelvis | Paired | `configs/pix2pix_pelvis.yaml` |
-| **Diffusion** | Paired LDM | Brain | Paired | `configs/diffusion_paired_brain.yaml` |
-| **Diffusion** | Paired LDM | Pelvis | Paired | `configs/diffusion_paired_pelvis.yaml` |
-| **Diffusion** | Cycle-Diffusion | Brain | Unpaired | `configs/diffusion_unpaired_brain.yaml` |
-| **Diffusion** | Cycle-Diffusion | Pelvis | Unpaired | `configs/diffusion_unpaired_pelvis.yaml` |
+| **CycleGAN 2D** | Unpaired GAN | Brain | Unpaired | `configs/cyclegan2d_brain.yaml` |
+| **CycleGAN 2D** | Unpaired GAN | Pelvis | Unpaired | `configs/cyclegan2d_pelvis.yaml` |
+| **Pix2Pix 2D** | Paired GAN | Brain | Paired | `configs/pix2pix2d_brain.yaml` |
+| **Pix2Pix 2D** | Paired GAN | Pelvis | Paired | `configs/pix2pix2d_pelvis.yaml` |
+| **Diffusion 2.5D** | Paired LDM | Brain | Paired | `configs/paired_diffusion2.5d_brain.yaml` |
+| **Diffusion 2.5D** | Paired LDM | Pelvis | Paired | `configs/paired_diffusion2.5d_pelvis.yaml` |
+| **Diffusion 2.5D** | Cycle-Diffusion | Brain | Unpaired | `configs/unpaired_diffusion2.5d_brain.yaml` |
+| **Diffusion 2.5D** | Cycle-Diffusion | Pelvis | Unpaired | `configs/unpaired_diffusion2.5d_pelvis.yaml` |
 
 ---
 
