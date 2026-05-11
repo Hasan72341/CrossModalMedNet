@@ -118,7 +118,8 @@ CrossModalMedNet/
 │   └── utils/          # Masked Metrics & High-res Visualization
 ├── configs/            # Modular Experiment Configuration (10 YAMLs)
 ├── checkpoints/        # Pre-trained SOTA Weights (Git LFS)
-├── scripts/            # Dataset Validation & Distribution Checkers
+├── presentation/       # Final LaTeX presentation and assets
+├── scripts/            # Dataset Validation & Evaluation Scripts
 ├── docs/               # Technical Reports & Comparative Studies
 ├── app.py              # Unified Research Dashboard
 └── inference.py        # CLI Inference & Metrics Engine
