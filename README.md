@@ -53,6 +53,21 @@ pip install -e .
 
 ---
 
+## 📦 Data Source
+
+This project uses the **SynthRAD 2023 Grand Challenge** dataset (paired CT and MR volumes with
+anatomical masks, brain & pelvis):
+
+- 🔗 **Challenge:** https://synthrad2023.grand-challenge.org/
+- 📥 **Dataset (Task 1):** https://synthrad2023.grand-challenge.org/data/ — access requires a free
+  Grand Challenge account; the data is released for research use under the challenge's terms.
+- 📄 **Dataset citation:** Thummerer A. *et al.*, "SynthRAD2023 Grand Challenge dataset: Generating
+  synthetic CT for radiotherapy," *Medical Physics*, 2023. Please cite the dataset authors if you
+  use this data.
+
+> ⚠️ Raw imaging data is **not** redistributed in this repository — download it from the Grand
+> Challenge above and run the preprocessing pipeline below.
+
 ## 📊 Data Lifecycle
 
 ### 1. Raw Data Structure
