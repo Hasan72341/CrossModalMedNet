@@ -612,12 +612,15 @@ def train(settings: Settings, device: torch.device) -> None:
 
                 if settings.use_torchmetrics and g_loss_mean is not None:
                     g_loss_mean.update(g_loss)
-                    d_loss_mean.update(d_loss)  # type: ignore[union-attr]
+                    # Only log the discriminator loss on iterations where D was actually
+                    # updated (d_update_every > 1 skips D steps); otherwise d_loss is stale.
+                    if d_results is not None:
+                        d_loss_mean.update(d_results[0])  # type: ignore[union-attr]
 
                     if is_main:
                         pbar.set_postfix({
                             "G": f"{g_loss.item():.4f}",
-                            "D": f"{d_loss.item():.4f}"
+                            "D": f"{d_results[0].item():.4f}" if d_results is not None else "—",
                         })
 
                     if writer is not None:

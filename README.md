@@ -74,9 +74,10 @@ Our pipeline ensures all research data is clinically comparable:
 3.  **Cropping**: Automated mask bounding-box cropping with 5-voxel margins.
 4.  **Normalization**: HU-aware scaling (CT: [-1000, 1000] $\rightarrow$ [-1, 1]).
 
-Run the pipeline:
+Run the pipeline (writes processed `.pt` volumes + `manifest.csv` to `--output`):
 ```bash
-python src/data/preprocess.py --config configs/preprocess.yaml
+python src/data/preprocess.py --data2023 data/raw --output ./SynthRAD2023_Dataset --workers 4
+# add --dry_run to validate without writing, or --patient_id 1BA001 for a single case
 ```
 
 ---
@@ -84,11 +85,19 @@ python src/data/preprocess.py --config configs/preprocess.yaml
 ## 🏋️ Training & Inference
 
 ### Model Training
-Reference any of the 8 model configs to start training:
+Training is configured through environment variables / `Settings` (pydantic), not a `--config`
+flag. Copy `.env.example` to `.env` and set `DATA_ROOT` / `MANIFEST_PATH` (and region/hyper-params
+as needed), then launch the trainer module:
 ```bash
-# Example: Train Pix2Pix for Pelvis
-python models/pix2pix/train.py --config configs/pix2pix_pelvis.yaml
+cp .env.example .env            # then edit DATA_ROOT, MANIFEST_PATH, region, ...
+python -m models.pix2pix.train --num_epochs 200   # --num_epochs overrides the configured value
 ```
+For a quick verified end-to-end smoke test (eval path on a tiny test list):
+```bash
+make smoke-pix2pix-brain
+```
+> The per-architecture YAMLs in `configs/` (e.g. `pix2pix2d_pelvis.yaml`) drive the Streamlit app
+> and inference model selection.
 
 ### Dashboard Inference
 Launch the interactive Streamlit interface to run cross-model comparisons:
@@ -131,9 +140,22 @@ CrossModalMedNet/
 
 Metrics are calculated using the `src.utils.metrics` module. We report **Masked Metrics** (MAE, MSE, SSIM, PSNR, LPIPS) to prevent background padding from inflating performance scores, focusing purely on anatomical translation fidelity.
 
+> **Note on masked metrics:** MAE/MSE/PSNR are computed on the anatomical foreground only; SSIM is
+> a spatial metric and is computed on background-zeroed images. `data_range=2.0` (tensors are in
+> `[-1, 1]`). See `src/utils/metrics.py`.
+
 Detailed comparative analysis reports are available in `docs/`:
 - [CycleGAN vs Diffusion Analysis](docs/all_models_comparison/all_models_comparison.md)
 - [Brain Optimization Study](docs/cyclegan_brain/cyclegan_brain_documentation.md)
+
+---
+
+## 🧠 Engineering & AI-Assisted Development
+- **[docs/AI_FLUENCY.md](docs/AI_FLUENCY.md)** — how AI tools were used in development: driving
+  productivity, prompt engineering, critical assessment of AI output, and workflow integration.
+- **[docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md)** — engineering audit trail: correctness issues
+  found, fixed, and documented (e.g. LPIPS channel handling, masked-PSNR, reproducible validation).
+- **[CHANGELOG.md](CHANGELOG.md)** — versioned change history.
 
 ---
 
