@@ -41,10 +41,15 @@ class MetricsCalculator:
                 results['mae_masked'] = 0.0
                 results['mse_masked'] = 0.0
 
-            # 2. SSIM / PSNR on masked images
-            # Multiply by mask to zero out background
-            results['ssim'] = self.ssim_metric(fake * mask, real * mask).item()
-            results['psnr'] = self.psnr_metric(fake * mask, real * mask).item()
+            # 2. SSIM is a spatial metric -> compute on masked images (background zeroed).
+            mask_f = mask.float()
+            results['ssim'] = self.ssim_metric(fake * mask_f, real * mask_f).item()
+            # PSNR from the FOREGROUND-only MSE so the (large) zeroed background does not
+            # inflate the score. data_range = 2.0 for [-1, 1] -> data_range**2 = 4.0.
+            if masked_diff.numel() > 0:
+                results['psnr'] = float(10.0 * np.log10(4.0 / (results['mse_masked'] + 1e-8)))
+            else:
+                results['psnr'] = 0.0
         else:
             # Fallback to full-image metrics
             results['mae'] = torch.abs(fake - real).mean().item()
@@ -52,8 +57,11 @@ class MetricsCalculator:
             results['ssim'] = self.ssim_metric(fake, real).item()
             results['psnr'] = self.psnr_metric(fake, real).item()
 
-        # 3. LPIPS (always global or on masked - usually global is fine for perceptual)
-        results['lpips'] = self.lpips_vgg(fake, real).mean().item()
+        # 3. LPIPS (perceptual, global). LPIPS-VGG expects 3-channel RGB in [-1, 1];
+        # our scans are single-channel, so repeat the grey channel to 3 channels.
+        fake_rgb = fake.repeat(1, 3, 1, 1) if fake.shape[1] == 1 else fake
+        real_rgb = real.repeat(1, 3, 1, 1) if real.shape[1] == 1 else real
+        results['lpips'] = self.lpips_vgg(fake_rgb, real_rgb).mean().item()
         
         return results
 

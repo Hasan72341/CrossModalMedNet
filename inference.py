@@ -8,6 +8,17 @@ import numpy as np
 from src.utils.visualize import plot_translation_results
 from src.utils.metrics import MetricsCalculator
 
+
+def _load_state(model, ckpt):
+    """Load a checkpoint, surfacing any key mismatch instead of failing silently."""
+    state = ckpt["model_state"] if isinstance(ckpt, dict) and "model_state" in ckpt else ckpt
+    missing, unexpected = model.load_state_dict(state, strict=False)
+    if missing or unexpected:
+        print(f"[warn] checkpoint key mismatch -> missing: {len(missing)}, unexpected: {len(unexpected)}")
+        if missing:
+            print(f"        e.g. missing: {list(missing)[:5]}")
+    return model
+
 def parse_args():
     parser = argparse.ArgumentParser(description="CrossModalMedNet Inference")
     parser.add_argument("--architecture", type=str, required=True, choices=["cyclegan", "pix2pix", "diffusion_paired", "diffusion_unpaired"])
@@ -28,16 +39,16 @@ def load_model(args):
         model = build_cyclegan_2d_friendly(use_attention=False, use_multiscale=True)
         ckpt_path = base_dir / "checkpoints" / f"cyclegan_{args.region}" / "latest.pth"
         ckpt = torch.load(ckpt_path, map_location=args.device)
-        model.load_state_dict(ckpt["model_state"] if "model_state" in ckpt else ckpt)
+        _load_state(model, ckpt)
         model.to(args.device).eval()
         return lambda x: model.G_CT2MRI(x)
-        
+
     elif args.architecture == "pix2pix":
         from models.pix2pix.models import build_pix2pix
         model = build_pix2pix(input_nc=1, output_nc=1)
         ckpt_path = base_dir / "checkpoints" / f"pix2pix_{args.region}" / "latest.pth"
         ckpt = torch.load(ckpt_path, map_location=args.device)
-        model.load_state_dict(ckpt["model_state"] if "model_state" in ckpt else ckpt)
+        _load_state(model, ckpt)
         model.to(args.device).eval()
         return lambda x: model.G_CT2MRI(x)
         
@@ -63,7 +74,7 @@ def main():
     elif img.dim() == 3: img = img.unsqueeze(0)
     
     if img.shape[-2:] != (256, 256):
-        img = F.interpolate(img, size=(256, 256), mode='bilinear')
+        img = F.interpolate(img, size=(256, 256), mode='bilinear', align_corners=False)
     
     img = img.to(device)
     
@@ -86,7 +97,7 @@ def main():
         if target.dim() == 2: target = target.unsqueeze(0).unsqueeze(0)
         elif target.dim() == 3: target = target.unsqueeze(0)
         if target.shape[-2:] != (256, 256):
-            target = F.interpolate(target, size=(256, 256), mode='bilinear')
+            target = F.interpolate(target, size=(256, 256), mode='bilinear', align_corners=False)
         target = target.to(device)
         
         plot_translation_results(img, target, output, title=f"{args.architecture} {args.region}", save_path=args.output)

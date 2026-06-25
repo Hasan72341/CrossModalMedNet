@@ -27,6 +27,7 @@ def save_test_visuals(
     epoch: int
 ) -> None:
     """Save a 4-panel visualization: Real MRI, Fake CT, Real CT, Fake MRI"""
+    was_training = model.training
     model.eval()
     save_dir.mkdir(parents=True, exist_ok=True)
     
@@ -75,6 +76,9 @@ def save_test_visuals(
     plt.savefig(save_dir / f"epoch_{epoch:03d}_visuals.png")
     plt.close()
 
+    if was_training:
+        model.train()  # restore training mode (eval() disables dropout in the ResNet blocks)
+
 
 def run_evaluation(
     model,
@@ -84,6 +88,7 @@ def run_evaluation(
     epoch: int,
 ) -> dict:
     """Run metrics (LPIPS, MSE, SSIM, PSNR) on the test set and log patient-wise."""
+    was_training = model.training
     model.eval()
     save_dir.mkdir(parents=True, exist_ok=True)
     
@@ -165,5 +170,7 @@ def run_evaluation(
         if write_h:
             h_writer.writeheader()
         h_writer.writerow(summary)
-        
+
+    if was_training:
+        model.train()  # restore training mode for the caller
     return summary

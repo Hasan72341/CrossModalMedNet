@@ -42,6 +42,8 @@ class SynthRADDataset(Dataset):
             df = df[df['region'] == region]
             
         self.df = df
+        self.split = split
+        self.is_train = (split == 'train')
         self.unpaired = unpaired
         self.mode = mode
         self.patch_size = patch_size
@@ -93,11 +95,15 @@ class SynthRADDataset(Dataset):
         return mri, ct, mask
 
     def _get_slice_indices(self, max_dim):
+        # Random slices for training (augmentation); deterministic CENTER slice for
+        # val/test so reported metrics are reproducible across runs.
         if self.mode == '2d':
-            return [random.randint(0, max_dim - 1)]
+            idx = random.randint(0, max_dim - 1) if self.is_train else max_dim // 2
+            return [idx]
         elif self.mode == '2.5d':
             half = self.num_slices // 2
-            idx = random.randint(half, max_dim - half - 1)
+            idx = random.randint(half, max_dim - half - 1) if self.is_train else max_dim // 2
+            idx = max(half, min(idx, max_dim - half - 1))  # clamp so the window stays in-bounds
             return list(range(idx - half, idx + half + 1))
         return []
 
@@ -118,7 +124,8 @@ class SynthRADDataset(Dataset):
             mask = self._load_pt(self.mri_masks[index])
             res_id = self.mri_ids[index]
             res_region = self.mri_regions[index]
-            ct_idx = random.randint(0, len(self.ct_paths)-1)
+            # random CT pairing for training; deterministic for val/test reproducibility
+            ct_idx = random.randint(0, len(self.ct_paths)-1) if self.is_train else (index % len(self.ct_paths))
             ct = self._load_pt(self.ct_paths[ct_idx])
         else:
             mask = self._load_pt(self.mask_paths[index])
