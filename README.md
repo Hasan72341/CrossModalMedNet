@@ -37,6 +37,12 @@ Synthetic MRI generation from CT scans is critical for MRI-only radiotherapy pla
 
 ## 🚀 Installation
 
+### Troubleshooting
+
+- Ensure Git LFS is installed before downloading checkpoints.
+- Use Python 3.10 or newer.
+- It is recommended to use a virtual environment to avoid dependency conflicts.
+
 ### Prerequisites
 - **Git LFS**: Required to download pre-trained model checkpoints.
   ```bash
